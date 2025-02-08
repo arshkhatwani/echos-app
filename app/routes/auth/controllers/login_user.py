@@ -1,4 +1,4 @@
-from routes.auth.models import LoginResponse, UserBody
+from app.routes.auth.models import LoginResponse, UserBody
 
 
 class LoginUser:

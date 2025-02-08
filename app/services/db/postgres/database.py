@@ -14,9 +14,12 @@ Base = declarative_base()
 
 
 class DatabaseSessionManager:
+    _engine: AsyncEngine | None
+    _sessionmaker: async_sessionmaker | None
+
     def __init__(self):
-        self._engine: AsyncEngine | None = None
-        self._sessionmaker: async_sessionmaker | None = None
+        self._engine = None
+        self._sessionmaker = None
 
     def init(self, host: str):
         self._engine = create_async_engine(host)

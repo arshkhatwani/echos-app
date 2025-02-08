@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from routes.auth.controllers.login_user import LoginUser
-from routes.auth.models import LoginResponse, UserBody
+from app.routes.auth.controllers.login_user import LoginUser
+from app.routes.auth.models import LoginResponse, UserBody
 
 router = APIRouter(
     prefix="/auth",

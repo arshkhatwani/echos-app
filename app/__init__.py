@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
-from config import config
-from services.db.postgres.database import sessionmanager
+from app.config import config
+from app.services.db.postgres.database import sessionmanager
 
 
 def init_app(init_db=True):
@@ -19,11 +19,8 @@ def init_app(init_db=True):
 
     server = FastAPI(title="FastAPI server", lifespan=lifespan)
 
-    from routes.auth.routes import router as auth_router
+    from app.routes.auth.routes import router as auth_router
 
     server.include_router(auth_router, prefix="/auth", tags=["Auth"])
 
     return server
-
-
-app = init_app()

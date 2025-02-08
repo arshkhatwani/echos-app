@@ -3,7 +3,7 @@ from uuid import uuid4
 from sqlalchemy import Column, String
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.db.postgres.database import Base
+from app.services.db.postgres.database import Base
 
 
 class User(Base):

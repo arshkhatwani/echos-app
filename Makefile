@@ -3,3 +3,15 @@ install-requirements:
 
 freeze-requirements:
 	pip freeze > requirements.txt
+
+start-local-dev:
+	PYTHONPATH=. fastapi dev run.py
+
+lint:
+	ruff check . --fix
+
+format:
+	ruff format .
+
+type-check:
+	mypy .
