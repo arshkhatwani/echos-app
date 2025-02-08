@@ -1,5 +1,6 @@
 from routes.auth.models import LoginResponse
 
+
 class LoginUser:
     def __init__(self, username: str, password: str):
         self.username = username

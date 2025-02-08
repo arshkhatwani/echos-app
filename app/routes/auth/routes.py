@@ -7,13 +7,11 @@ router = APIRouter(
     tags=["Auth"],
 )
 
-@router.post('/login',
-             description='Authenticates user and creates account if one does not exist',
-            response_model=LoginResponse
+
+@router.post(
+    "/login",
+    description="Authenticates user and creates account if one does not exist",
+    response_model=LoginResponse,
 )
 async def login(username: str, password: str) -> LoginResponse:
-    return await LoginUser(
-        username=username,
-        password=password
-    ).handle_request()
-
+    return await LoginUser(username=username, password=password).handle_request()
