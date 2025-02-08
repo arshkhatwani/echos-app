@@ -1,2 +1,2 @@
 start-local-dev:
-	fastapi dev main.py
+	PYTHONPATH=. fastapi dev main.py
