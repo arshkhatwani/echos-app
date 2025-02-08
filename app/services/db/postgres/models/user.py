@@ -1,0 +1,24 @@
+from uuid import uuid4
+
+from sqlalchemy import Column, String
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from services.db.postgres.database import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(String, primary_key=True)
+    username = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+
+    @classmethod
+    async def create(cls, db: AsyncSession, id=None, **kwargs):
+        if not id:
+            id = uuid4().hex
+
+        transaction = cls(id=id, **kwargs)
+        db.add(transaction)
+        await db.commit()
+        await db.refresh(transaction)
+        return transaction
