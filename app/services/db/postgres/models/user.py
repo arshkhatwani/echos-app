@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.services.db.postgres.database import Base
@@ -22,3 +22,9 @@ class User(Base):
         await db.commit()
         await db.refresh(transaction)
         return transaction
+
+    @classmethod
+    async def get_user_by_username(cls, db: AsyncSession, username: str):
+        query = select(cls).filter(cls.username == username)
+        transaction = await db.scalars(query)
+        return transaction.first()
