@@ -20,7 +20,9 @@ def init_app(init_db=True):
     server = FastAPI(title="FastAPI server", lifespan=lifespan)
 
     from app.routes.auth.routes import router as auth_router
+    from app.routes.chat.routes import router as chat_router
 
-    server.include_router(auth_router, prefix="/auth", tags=["Auth"])
+    server.include_router(auth_router)
+    server.include_router(chat_router)
 
     return server
