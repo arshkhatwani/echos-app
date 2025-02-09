@@ -4,6 +4,7 @@ from sqlalchemy import Column, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.services.db.postgres.database import Base
+from app.services.hash.service import hash_service
 
 
 class User(Base):
@@ -16,6 +17,8 @@ class User(Base):
     async def create(cls, db: AsyncSession, id=None, **kwargs):
         if not id:
             id = uuid4().hex
+
+        kwargs["password"] = hash_service.hash_password(kwargs["password"])
 
         transaction = cls(id=id, **kwargs)
         db.add(transaction)
