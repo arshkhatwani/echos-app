@@ -11,6 +11,8 @@ class Config:
             DB_NAME=os.getenv("DB_NAME", "echos"),
         ),
     )
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "secret")
+    JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 
 
 config = Config
