@@ -8,10 +8,10 @@ start-local-dev:
 	PYTHONPATH=. fastapi dev run.py
 
 lint:
-	ruff check . --fix
+	ruff check --fix **/
 
 format:
-	ruff format .
+	ruff format **/
 
 type-check:
 	mypy .
