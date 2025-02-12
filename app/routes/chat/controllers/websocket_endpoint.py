@@ -1,6 +1,7 @@
 import json
 from fastapi import WebSocket, WebSocketDisconnect
 from app.routes.chat.common import user_connection_manager
+from app.routes.chat.constants import MessageType
 
 
 class WebSocketEndpoint:
@@ -13,7 +14,7 @@ class WebSocketEndpoint:
         try:
             while True:
                 data = json.loads(await self.websocket.receive_text())
-                if data.get("type") == "send_message":
+                if data.get("type") == MessageType.SEND_MESSAGE:
                     await user_connection_manager.send_personal_message(
                         sender_id=self.user_id,
                         receiver_id=data.get("receiver_id"),
