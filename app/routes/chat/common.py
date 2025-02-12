@@ -12,8 +12,6 @@ class UserConnectionManager:
         self.active_connections[user_id] = websocket
 
     async def disconnect(self, user_id: str):
-        websocket = self.active_connections[user_id]
-        await websocket.close()
         self.active_connections.pop(user_id)
 
     async def send_personal_message(
