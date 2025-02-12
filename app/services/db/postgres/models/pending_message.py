@@ -1,0 +1,26 @@
+from uuid import uuid4
+from app.services.db.postgres.database import Base
+from sqlalchemy import Column, String
+from sqlalchemy.ext.asyncio import AsyncSession
+
+
+class PendingMessage(Base):
+    __tablename__ = "pending_messages"
+
+    id = Column(String, primary_key=True)
+    sender_id = Column(String, nullable=False)
+    receiver_id = Column(String, nullable=False)
+    type = Column(String, nullable=False)
+    message = Column(String, nullable=False)
+    timestamp = Column(String, nullable=True)
+
+    @classmethod
+    async def create(cls, db: AsyncSession, id=None, **kwargs):
+        if not id:
+            id = uuid4().hex
+
+        transaction = cls(id=id, **kwargs)
+        db.add(transaction)
+        await db.commit()
+        await db.refresh(transaction)
+        return transaction
