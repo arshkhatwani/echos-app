@@ -1,6 +1,6 @@
 from uuid import uuid4
 from app.services.db.postgres.database import Base
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -24,3 +24,11 @@ class PendingMessage(Base):
         await db.commit()
         await db.refresh(transaction)
         return transaction
+
+    @classmethod
+    async def get_pending_messages_for_receiver(
+        cls, db: AsyncSession, receiver_id: str
+    ):
+        query = select(cls).filter(cls.receiver_id == receiver_id)
+        transaction = await db.scalars(query)
+        return transaction.all()

@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import WebSocket
 from app.services.db.postgres.database import get_db
 from app.services.db.postgres.models.pending_message import PendingMessage
@@ -13,6 +14,7 @@ class UserConnectionManager:
     async def connect(self, user_id: str, websocket: WebSocket):
         await websocket.accept()
         self.active_connections[user_id] = websocket
+        await self._send_pending_messages(user_id)
 
     async def disconnect(self, user_id: str):
         self.active_connections.pop(user_id)
@@ -22,7 +24,7 @@ class UserConnectionManager:
     ):
         receiver_socket = self.active_connections.get(receiver_id)
         if not receiver_socket:
-            await self.save_personal_message(
+            await self._save_personal_message(
                 sender_id=sender_id, receiver_id=receiver_id, message=message
             )
             return False
@@ -30,7 +32,7 @@ class UserConnectionManager:
         await receiver_socket.send_json({"sender_id": sender_id, "message": message})
         return True
 
-    async def save_personal_message(
+    async def _save_personal_message(
         self, sender_id: str, receiver_id: str, message: str
     ):
         async with get_db() as db:
@@ -41,6 +43,19 @@ class UserConnectionManager:
                 type=MessageType.SEND_MESSAGE,
                 message=message,
             )
+
+    async def _send_pending_messages(self, user_id: str):
+        websocket = self.active_connections[user_id]
+        async with get_db() as db:
+            result = await PendingMessage.get_pending_messages_for_receiver(
+                db=db, receiver_id=user_id
+            )
+        await asyncio.gather(
+            *[websocket.send_json(self._reformat_message(msg)) for msg in result]
+        )
+
+    def _reformat_message(self, message: PendingMessage):
+        return {k: v for k, v in message.__dict__.items() if k != "_sa_instance_state"}
 
 
 user_connection_manager = UserConnectionManager()
