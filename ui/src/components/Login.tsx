@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { MessageCircle } from "lucide-react";
-import { accessTokenAtom, isAuthenticatedAtom } from "../store/atoms";
+import {
+  accessTokenAtom,
+  isAuthenticatedAtom,
+  currentUserAtom,
+} from "../store/atoms";
 import { auth } from "../api/auth";
 
 interface LoginProps {
@@ -15,6 +19,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [error, setError] = useState("");
   const [, setAccessToken] = useAtom(accessTokenAtom);
   const [, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +29,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       const response = await auth.login({ username, password });
       setAccessToken(response.access_token);
       setIsAuthenticated(true);
+      setCurrentUser({ ...currentUser, name: username });
       onLogin();
     } catch (err: any) {
       setError(err.response?.data?.message || "An error occurred during login");
