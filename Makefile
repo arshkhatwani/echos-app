@@ -15,3 +15,8 @@ format:
 
 type-check:
 	mypy .
+
+quality-check:
+	make lint
+	make format
+	make type-check
