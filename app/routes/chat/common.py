@@ -58,10 +58,15 @@ class UserConnectionManager:
     def _reformat_message(self, message: PendingMessage):
         return {k: v for k, v in message.__dict__.items() if k != "_sa_instance_state"}
 
-    async def _send_delivered_message_notification(self, sender_id: str, receiver_id: str):
+    async def _send_delivered_message_notification(
+        self, sender_id: str, receiver_id: str
+    ):
         websocket = self.active_connections.get(sender_id)
         if not websocket:
             return
-        await websocket.send_json({'receiver_id': receiver_id, 'type': MessageType.DELIVERED_MESSAGE})
+        await websocket.send_json(
+            {"receiver_id": receiver_id, "type": MessageType.DELIVERED_MESSAGE}
+        )
+
 
 user_connection_manager = UserConnectionManager()
