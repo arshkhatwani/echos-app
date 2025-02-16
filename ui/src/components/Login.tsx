@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { useAtom } from "jotai";
 import { MessageCircle } from "lucide-react";
+import { accessTokenAtom, isAuthenticatedAtom } from "../store/atoms";
+import { auth } from "../api/auth";
 
 interface LoginProps {
   onLogin: () => void;
@@ -7,6 +10,25 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [, setAccessToken] = useAtom(accessTokenAtom);
+  const [, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const response = await auth.login({ username, password });
+      setAccessToken(response.access_token);
+      setIsAuthenticated(true);
+      onLogin();
+    } catch (err: any) {
+      setError(err.response?.data?.message || "An error occurred during login");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -23,13 +45,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </p>
         </div>
 
-        <form
-          className="mt-8 space-y-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onLogin();
-          }}
-        >
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
           <div className="space-y-4">
             <div>
               <label
@@ -42,6 +64,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 id="username"
                 name="username"
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Enter your username"
@@ -59,6 +83,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 id="password"
                 name="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 placeholder="Enter your password"

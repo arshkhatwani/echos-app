@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { useAtom } from "jotai";
 import Login from "./components/Login";
 import Chat from "./components/Chat";
+import { isAuthenticatedAtom } from "./store/atoms";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    setIsAuthenticated(true);
   };
 
   return (
     <div className="h-screen bg-gray-100">
-      {!isLoggedIn ? <Login onLogin={handleLogin} /> : <Chat />}
+      {!isAuthenticated ? <Login onLogin={handleLogin} /> : <Chat />}
     </div>
   );
 }
