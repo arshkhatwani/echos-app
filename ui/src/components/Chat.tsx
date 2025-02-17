@@ -8,6 +8,7 @@ import {
   newMessageAtom,
 } from "../store/atoms";
 import { Message } from "../types";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Chat = () => {
   const [currentUser] = useAtom(currentUserAtom);
@@ -57,9 +58,7 @@ const Chat = () => {
             </span>
           </div>
           <div className="flex space-x-2">
-            <button className="p-2 hover:bg-gray-100 rounded-full">
-              <MoreVertical className="h-5 w-5 text-gray-500" />
-            </button>
+            <ProfileDropdown />
           </div>
         </div>
 
