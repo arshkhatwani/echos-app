@@ -32,4 +32,4 @@ def get_user_id_from_token(
     try:
         return jwt_service.decode_user_id(token)
     except Exception:
-        raise HTTPException(status_code=403, detail="Invalid authorization token")
+        raise HTTPException(status_code=401, detail="Invalid authorization token")

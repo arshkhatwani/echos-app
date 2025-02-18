@@ -32,7 +32,7 @@ class LoginUser:
         if result and check_password:
             return result
         if result and not check_password:
-            raise HTTPException(status_code=403, detail="Incorrect password")
+            raise HTTPException(status_code=401, detail="Incorrect password")
 
         return result
 
