@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { Message, Contact, User } from "../types";
+import { Contact, User } from "../types";
 
 export const accessTokenAtom = atom<string | null>(null);
 export const isAuthenticatedAtom = atom<boolean>(false);
