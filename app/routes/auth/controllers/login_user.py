@@ -1,4 +1,5 @@
-from app.routes.auth.models import LoginResponse, UserBody
+from fastapi.security import OAuth2PasswordRequestForm
+from app.routes.auth.models import LoginResponse
 from app.services.db.postgres.database import get_db
 from app.services.db.postgres.models.user import User
 from app.services.jwt.service import jwt_service
@@ -7,7 +8,7 @@ from fastapi import HTTPException
 
 
 class LoginUser:
-    def __init__(self, user_body: UserBody):
+    def __init__(self, user_body: OAuth2PasswordRequestForm):
         self.user_body = user_body
 
     async def handle_request(self) -> LoginResponse:
@@ -16,7 +17,7 @@ class LoginUser:
         user = user_exists if user_exists else await self._create_user()
         access_token = jwt_service.encode_user_id(str(user.id))
 
-        return LoginResponse(access_token=access_token)
+        return LoginResponse(access_token=access_token, token_type="bearer")
 
     async def _check_user_exists(self) -> User | None:
         async with get_db() as db:
@@ -37,5 +38,7 @@ class LoginUser:
 
     async def _create_user(self) -> User:
         async with get_db() as db:
-            result = await User.create(db, **self.user_body.model_dump())
+            result = await User.create(
+                db, username=self.user_body.username, password=self.user_body.password
+            )
         return result

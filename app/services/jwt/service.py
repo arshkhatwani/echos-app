@@ -1,6 +1,9 @@
 import jwt
 from app.config import config
-from fastapi import Header, HTTPException
+from fastapi import HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer
+
+token_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 class JWTService:
@@ -24,12 +27,9 @@ jwt_service = JWTService()
 
 
 def get_user_id_from_token(
-    authorization: str = Header(
-        description="Authorization Token. Expected format: Bearer <token>"
-    ),
+    token: str = Depends(token_scheme),
 ) -> str:
     try:
-        token = authorization.split(" ")[1]
         return jwt_service.decode_user_id(token)
     except Exception:
         raise HTTPException(status_code=403, detail="Invalid authorization token")
