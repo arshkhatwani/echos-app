@@ -33,7 +33,13 @@ class User(Base):
         return transaction.first()
 
     @classmethod
-    async def get_users_by_username(cls, db: AsyncSession, username: str):
-        query = select(cls).filter(cls.username.contains(username))
+    async def search_users_except_current(
+        cls, db: AsyncSession, username: str, user_id: int
+    ):
+        query = (
+            select(cls)
+            .filter(cls.username.contains(username))
+            .filter(cls.id != user_id)
+        )
         transaction = await db.scalars(query)
         return transaction.all()

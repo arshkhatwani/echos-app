@@ -10,7 +10,9 @@ class SearchUsers:
 
     async def handle_request(self) -> list[SearchUserResult]:
         async with get_db() as db:
-            result = await User.get_users_by_username(db, self.search)
+            result = await User.search_users_except_current(
+                db, self.search, self.user_id
+            )
 
         return [
             SearchUserResult(user_id=user.id, username=user.username) for user in result
