@@ -31,3 +31,9 @@ class User(Base):
         query = select(cls).filter(cls.username == username)
         transaction = await db.scalars(query)
         return transaction.first()
+
+    @classmethod
+    async def get_users_by_username(cls, db: AsyncSession, username: str):
+        query = select(cls).filter(cls.username.contains(username))
+        transaction = await db.scalars(query)
+        return transaction.all()
