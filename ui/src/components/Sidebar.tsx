@@ -1,6 +1,10 @@
 import { useAtom } from "jotai";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { chat } from "../api/chat";
+import { useDebounceAsync } from "../hooks/useDebounceAsync";
 import {
+  accessTokenAtom,
   contactsAtom,
   currentUserAtom,
   selectedChatAtom,
@@ -8,9 +12,19 @@ import {
 import ProfileDropdown from "./ProfileDropdown";
 
 function Sidebar() {
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentUser] = useAtom(currentUserAtom);
   const [contacts, setContacts] = useAtom(contactsAtom);
   const [selectedChat, setSelectedChat] = useAtom(selectedChatAtom);
+  const [accessToken] = useAtom(accessTokenAtom);
+  const searchUsers = useDebounceAsync(chat.searchUsers, 2000);
+
+  useEffect(() => {
+    if (!searchQuery.trim() || !accessToken) return;
+    searchUsers(searchQuery.trim(), accessToken).then((users) =>
+      console.log(users),
+    );
+  }, [searchQuery]);
 
   return (
     <>
@@ -37,6 +51,8 @@ function Sidebar() {
               type="text"
               placeholder="Search chats"
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
           </div>
