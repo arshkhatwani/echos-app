@@ -17,7 +17,7 @@ function SearchUsers() {
 
   const addUserToContacts = (user: SearchUserResponse) => {
     const contactsCopy = { ...contacts };
-    contactsCopy.push({
+    contactsCopy[user.user_id] = {
       id: user.user_id,
       name: user.username,
       lastMessage: "",
@@ -28,7 +28,7 @@ function SearchUsers() {
       }),
       avatar: SAMPLE_AVATAR,
       messages: [],
-    });
+    };
     setContacts(contactsCopy);
   };
 
@@ -59,6 +59,7 @@ function SearchUsers() {
                 key={contact.user_id}
                 onClick={() => {
                   addUserToContacts(contact);
+                  setSearchQuery("");
                 }}
                 className="flex items-center px-4 py-3 cursor-pointer hover:bg-gray-50"
               >
