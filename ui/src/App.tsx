@@ -1,4 +1,3 @@
-import React from "react";
 import { useAtom } from "jotai";
 import Login from "./components/Login";
 import Chat from "./components/Chat";
