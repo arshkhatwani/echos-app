@@ -6,13 +6,15 @@ export interface Message {
 }
 
 export interface Contact {
-  id: number;
+  id: string;
   name: string;
   lastMessage: string;
   time: string;
   avatar: string;
   messages: Message[];
 }
+
+export type ContactsMap = Record<any, any>;
 
 export interface User {
   name: string;
