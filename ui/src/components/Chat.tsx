@@ -1,19 +1,13 @@
 import { useAtom } from "jotai";
 import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
 import React from "react";
-import {
-  contactsAtom,
-  currentUserAtom,
-  newMessageAtom,
-  selectedChatAtom,
-} from "../store/atoms";
+import { contactsAtom, newMessageAtom, selectedChatAtom } from "../store/atoms";
 import { Message } from "../types";
 import Sidebar from "./Sidebar";
 
 const Chat = () => {
-  const [currentUser] = useAtom(currentUserAtom);
   const [contacts, setContacts] = useAtom(contactsAtom);
-  const [selectedChat, setSelectedChat] = useAtom(selectedChatAtom);
+  const [selectedChat] = useAtom(selectedChatAtom);
   const [newMessage, setNewMessage] = useAtom(newMessageAtom);
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -30,7 +24,7 @@ const Chat = () => {
       sent: true,
     };
 
-    const updatedContacts = [...contacts];
+    const updatedContacts = { ...contacts };
     updatedContacts[selectedChat] = {
       ...updatedContacts[selectedChat],
       messages: [...updatedContacts[selectedChat].messages, message],
@@ -76,7 +70,7 @@ const Chat = () => {
         {/* Messages */}
         <div className="flex-1 bg-[#e5ded8] p-4 overflow-y-auto">
           <div className="space-y-4">
-            {contacts[selectedChat].messages.map((message) => (
+            {contacts[selectedChat].messages.map((message: Message) => (
               <div
                 key={message.id}
                 className={`flex ${

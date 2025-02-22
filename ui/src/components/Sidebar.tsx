@@ -1,30 +1,16 @@
 import { useAtom } from "jotai";
-import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
-import { chat } from "../api/chat";
-import { useDebounceAsync } from "../hooks/useDebounceAsync";
 import {
-  accessTokenAtom,
   contactsAtom,
   currentUserAtom,
   selectedChatAtom,
 } from "../store/atoms";
 import ProfileDropdown from "./ProfileDropdown";
+import SearchUsers from "./SearchUsers";
 
 function Sidebar() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [currentUser] = useAtom(currentUserAtom);
-  const [contacts, setContacts] = useAtom(contactsAtom);
+  const [contacts] = useAtom(contactsAtom);
   const [selectedChat, setSelectedChat] = useAtom(selectedChatAtom);
-  const [accessToken] = useAtom(accessTokenAtom);
-  const searchUsers = useDebounceAsync(chat.searchUsers, 2000);
-
-  useEffect(() => {
-    if (!searchQuery.trim() || !accessToken) return;
-    searchUsers(searchQuery.trim(), accessToken).then((users) =>
-      console.log(users),
-    );
-  }, [searchQuery]);
 
   return (
     <>
@@ -45,21 +31,10 @@ function Sidebar() {
           </div>
         </div>
 
-        <div className="p-2">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search chats"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-          </div>
-        </div>
+        <SearchUsers />
 
         <div className="overflow-y-auto h-[calc(100vh-8rem)]">
-          {contacts.map((contact) => (
+          {Object.values(contacts).map((contact) => (
             <div
               key={contact.id}
               onClick={() => setSelectedChat(contact.id)}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_CONFIG } from "../config/constants";
 
-interface SearchUserResponse {
+export interface SearchUserResponse {
   username: string;
   user_id: string;
 }
