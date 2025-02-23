@@ -1,5 +1,8 @@
 from fastapi import APIRouter, WebSocket, Depends, Query
-from app.services.jwt.service import get_user_id_from_token
+from app.services.jwt.service import (
+    get_user_id_from_token,
+    get_user_id_from_token_for_websocket,
+)
 from app.routes.chat.controllers.websocket_endpoint import WebSocketEndpoint
 from app.routes.chat.controllers.search_users import SearchUsers
 
@@ -11,7 +14,7 @@ router = APIRouter(
 
 @router.websocket("/ws")
 async def websocket_endpoint(
-    websocket: WebSocket, user_id: str = Depends(get_user_id_from_token)
+    websocket: WebSocket, user_id: str = Depends(get_user_id_from_token_for_websocket)
 ):
     await WebSocketEndpoint(
         websocket=websocket,

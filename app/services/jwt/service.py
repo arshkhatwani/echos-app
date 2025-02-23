@@ -1,6 +1,6 @@
 import jwt
 from app.config import config
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException, Depends, Query, WebSocketException, status
 from fastapi.security import OAuth2PasswordBearer
 
 token_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -33,3 +33,14 @@ def get_user_id_from_token(
         return jwt_service.decode_user_id(token)
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid authorization token")
+
+
+def get_user_id_from_token_for_websocket(
+    token: str = Query(default=None, description="Authorization token"),
+) -> str:
+    try:
+        return jwt_service.decode_user_id(token)
+    except Exception:
+        raise WebSocketException(
+            code=status.WS_1008_POLICY_VIOLATION, reason="Invalid authorization token"
+        )
