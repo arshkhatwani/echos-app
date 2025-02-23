@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import Login from "./components/Login";
 import Chat from "./components/Chat";
 import { isAuthenticatedAtom } from "./store/atoms";
+import useWebSocket from "./hooks/useWebsocket";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -9,6 +10,8 @@ function App() {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
+
+  useWebSocket();
 
   return (
     <div className="h-screen bg-gray-100">
