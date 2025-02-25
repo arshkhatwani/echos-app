@@ -1,3 +1,5 @@
+import { MessageType } from "./enums";
+
 export interface Message {
   id: number;
   content: string;
@@ -19,4 +21,10 @@ export type ContactsMap = Record<any, any>;
 export interface User {
   name: string;
   avatar: string;
+}
+
+export interface SendMessageRequest {
+  message: string;
+  receiverId: string;
+  type: MessageType;
 }
