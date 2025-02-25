@@ -1,14 +1,21 @@
 import { useAtom } from "jotai";
 import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
 import React from "react";
-import { contactsAtom, newMessageAtom, selectedChatAtom } from "../store/atoms";
+import {
+  contactsAtom,
+  newMessageAtom,
+  selectedChatAtom,
+  sendMessageAtom,
+} from "../store/atoms";
 import { Message } from "../types";
 import Sidebar from "./Sidebar";
+import { MessageType } from "../enums";
 
 const Chat = () => {
   const [contacts, setContacts] = useAtom(contactsAtom);
   const [selectedChat] = useAtom(selectedChatAtom);
   const [newMessage, setNewMessage] = useAtom(newMessageAtom);
+  const [, setSendMessage] = useAtom(sendMessageAtom);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,7 +23,7 @@ const Chat = () => {
 
     const message: Message = {
       id: contacts[selectedChat].messages.length + 1,
-      content: newMessage,
+      content: newMessage.trim(),
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -31,6 +38,12 @@ const Chat = () => {
       lastMessage: newMessage,
       time: message.time,
     };
+
+    setSendMessage({
+      message: newMessage.trim(),
+      receiverId: updatedContacts[selectedChat].id,
+      type: MessageType.SEND_MESSAGE,
+    });
 
     setContacts(updatedContacts);
     setNewMessage("");
