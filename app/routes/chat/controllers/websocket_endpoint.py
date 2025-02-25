@@ -17,7 +17,7 @@ class WebSocketEndpoint:
                 if data.get("type") == MessageType.SEND_MESSAGE:
                     await user_connection_manager.send_personal_message(
                         sender_id=self.user_id,
-                        receiver_id=data.get("receiver_id"),
+                        receiver_id=data.get("receiverId"),
                         message=data.get("message"),
                     )
         except WebSocketDisconnect:
