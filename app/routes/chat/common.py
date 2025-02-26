@@ -30,7 +30,13 @@ class UserConnectionManager:
             return False
 
         await self._send_delivered_message_notification(sender_id, receiver_id)
-        await receiver_socket.send_json({"sender_id": sender_id, "message": message})
+        await receiver_socket.send_json(
+            {
+                "sender_id": sender_id,
+                "message": message,
+                "type": MessageType.SEND_MESSAGE,
+            }
+        )
         return True
 
     async def _save_personal_message(

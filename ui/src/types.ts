@@ -28,3 +28,9 @@ export interface SendMessageRequest {
   receiverId: string;
   type: MessageType;
 }
+
+export interface ReceiveMessageRequest {
+  senderId: string;
+  message: string;
+  type: MessageType;
+}

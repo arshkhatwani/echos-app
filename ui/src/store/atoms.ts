@@ -1,5 +1,10 @@
 import { atom } from "jotai";
-import { ContactsMap, SendMessageRequest, User } from "../types";
+import {
+  ContactsMap,
+  ReceiveMessageRequest,
+  SendMessageRequest,
+  User,
+} from "../types";
 
 export const accessTokenAtom = atom<string | null>(null);
 export const isAuthenticatedAtom = atom<boolean>(false);
@@ -109,3 +114,4 @@ export const selectedChatAtom = atom<any>("0");
 export const newMessageAtom = atom<string>("");
 
 export const sendMessageAtom = atom<SendMessageRequest | null>(null);
+export const receiveMessageAtom = atom<ReceiveMessageRequest | null>(null);
