@@ -19,6 +19,7 @@ class WebSocketEndpoint:
                         sender_id=self.user_id,
                         receiver_id=data.get("receiverId"),
                         message=data.get("message"),
+                        message_id=data.get("id"),
                     )
         except WebSocketDisconnect:
             await user_connection_manager.disconnect(self.user_id)
