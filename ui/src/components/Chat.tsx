@@ -1,6 +1,8 @@
 import { useAtom } from "jotai";
 import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
+import { MessageType } from "../enums";
 import {
   contactsAtom,
   newMessageAtom,
@@ -9,7 +11,6 @@ import {
 } from "../store/atoms";
 import { Message } from "../types";
 import Sidebar from "./Sidebar";
-import { MessageType } from "../enums";
 
 const Chat = () => {
   const [contacts, setContacts] = useAtom(contactsAtom);
@@ -22,7 +23,7 @@ const Chat = () => {
     if (!newMessage.trim()) return;
 
     const message: Message = {
-      id: contacts[selectedChat].messages.length + 1,
+      id: uuidv4(),
       content: newMessage.trim(),
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -43,6 +44,7 @@ const Chat = () => {
       message: newMessage.trim(),
       receiverId: updatedContacts[selectedChat].id,
       type: MessageType.SEND_MESSAGE,
+      id: message.id,
     });
 
     setContacts(updatedContacts);

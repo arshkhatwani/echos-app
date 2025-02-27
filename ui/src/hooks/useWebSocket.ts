@@ -30,11 +30,7 @@ function useWebSocket() {
     };
 
     ws.current.onmessage = (event) => {
-      console.log(
-        "Received message from server:",
-        event.data,
-        typeof event.data,
-      );
+      console.log("Received message from server:", event.data);
       const data = JSON.parse(event.data);
       switch (data.type) {
         case MessageType.SEND_MESSAGE:
@@ -42,6 +38,7 @@ function useWebSocket() {
             senderId: data.sender_id,
             message: data.message,
             type: MessageType.SEND_MESSAGE,
+            id: data.id,
           });
           break;
         default:
@@ -94,6 +91,8 @@ function useWebSocket() {
     };
     console.log(updatedContacts);
     setContacts(updatedContacts);
+
+    setReceiveMessage(null);
   }, [receiveMessage]);
 }
 

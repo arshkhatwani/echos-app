@@ -1,7 +1,7 @@
 import { MessageType } from "./enums";
 
 export interface Message {
-  id: number;
+  id: string;
   content: string;
   time: string;
   sent: boolean;
@@ -27,10 +27,12 @@ export interface SendMessageRequest {
   message: string;
   receiverId: string;
   type: MessageType;
+  id: string;
 }
 
 export interface ReceiveMessageRequest {
   senderId: string;
   message: string;
   type: MessageType;
+  id: string;
 }
