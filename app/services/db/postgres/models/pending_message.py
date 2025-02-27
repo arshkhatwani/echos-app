@@ -17,7 +17,7 @@ class PendingMessage(Base):
     @classmethod
     async def create(cls, db: AsyncSession, id=None, **kwargs):
         if not id:
-            id = uuid4().hex
+            id = str(uuid4())
 
         transaction = cls(id=id, **kwargs)
         db.add(transaction)
