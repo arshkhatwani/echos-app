@@ -1,8 +1,14 @@
 import { useAtom } from "jotai";
-import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
+import {
+  MoreVertical,
+  Paperclip,
+  Search,
+  Send,
+  Smile
+} from "lucide-react";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { MessageType } from "../enums";
+import { MessageStatus, MessageType } from "../enums";
 import {
   contactsAtom,
   newMessageAtom,
@@ -10,6 +16,7 @@ import {
   sendMessageAtom,
 } from "../store/atoms";
 import { Message } from "../types";
+import MessageStatusIcon from "./MessageStatusIcon";
 import Sidebar from "./Sidebar";
 
 const Chat = () => {
@@ -30,6 +37,7 @@ const Chat = () => {
         minute: "2-digit",
       }),
       sent: true,
+      status: MessageStatus.SENT,
     };
 
     const updatedContacts = { ...contacts };
@@ -98,9 +106,12 @@ const Chat = () => {
                   }`}
                 >
                   <p className="text-sm">{message.content}</p>
-                  <span className="text-xs text-gray-500 mt-1 block">
-                    {message.time}
-                  </span>
+                  <div className="mt-1 flex justify-end items-center space-x-1">
+                    <span className="text-xs text-gray-500 block">
+                      {message.time}
+                    </span>
+                    <MessageStatusIcon status={message.status} />
+                  </div>
                 </div>
               </div>
             ))}

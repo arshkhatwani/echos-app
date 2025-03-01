@@ -1,10 +1,11 @@
-import { MessageType } from "./enums";
+import { MessageStatus, MessageType } from "./enums";
 
 export interface Message {
   id: string;
   content: string;
   time: string;
   sent: boolean;
+  status: MessageStatus;
 }
 
 export interface Contact {
@@ -33,6 +34,12 @@ export interface SendMessageRequest {
 export interface ReceiveMessageRequest {
   senderId: string;
   message: string;
+  type: MessageType;
+  id: string;
+}
+
+export interface DeliveredMessageRequest {
+  receiverId: string;
   type: MessageType;
   id: string;
 }

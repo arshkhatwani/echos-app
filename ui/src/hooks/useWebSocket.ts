@@ -1,10 +1,11 @@
 import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { API_CONFIG } from "../config/constants";
-import { MessageType } from "../enums";
+import { MessageStatus, MessageType } from "../enums";
 import {
   accessTokenAtom,
   contactsAtom,
+  deliveredMessageAtom,
   isAuthenticatedAtom,
   receiveMessageAtom,
   sendMessageAtom,
@@ -18,6 +19,7 @@ function useWebSocket() {
   const [sendMessage, setSendMessage] = useAtom(sendMessageAtom);
   const [contacts, setContacts] = useAtom(contactsAtom);
   const [receiveMessage, setReceiveMessage] = useAtom(receiveMessageAtom);
+  const [deliveredMessage, setDeliveredMessage] = useAtom(deliveredMessageAtom);
 
   useEffect(() => {
     if (!isAuthenticated || !accessToken) return;
@@ -41,6 +43,13 @@ function useWebSocket() {
             id: data.id,
           });
           break;
+        case MessageType.DELIVERED_MESSAGE:
+          setDeliveredMessage({
+            receiverId: data.receiver_id,
+            type: MessageType.DELIVERED_MESSAGE,
+            id: data.id,
+          });
+          break;
         default:
           console.log("Unknown message type:", data.type);
       }
@@ -59,7 +68,6 @@ function useWebSocket() {
     if (!wsCurrent) return;
 
     wsCurrent.send(JSON.stringify(sendMessage));
-    console.log(sendMessage);
 
     setSendMessage(null);
   }, [sendMessage]);
@@ -80,6 +88,7 @@ function useWebSocket() {
         minute: "2-digit",
       }),
       sent: false,
+      status: MessageStatus.SENT,
     };
 
     const updatedContacts = { ...contacts };
@@ -89,11 +98,37 @@ function useWebSocket() {
       lastMessage: message.content,
       time: message.time,
     };
-    console.log(updatedContacts);
+    ``;
     setContacts(updatedContacts);
 
     setReceiveMessage(null);
   }, [receiveMessage]);
+
+  useEffect(() => {
+    if (!deliveredMessage) return;
+
+    const contactId = deliveredMessage.receiverId;
+    if (!contacts[contactId])
+      //  TODO: Handle non added user
+      return;
+
+    const updatedContacts = { ...contacts };
+    updatedContacts[contactId] = {
+      ...updatedContacts[contactId],
+      messages: updatedContacts[contactId].messages.map((message: Message) => {
+        if (message.id === deliveredMessage.id) {
+          return {
+            ...message,
+            status: MessageStatus.DELIVERED,
+          };
+        }
+        return message;
+      }),
+    };
+    setContacts(updatedContacts);
+
+    setDeliveredMessage(null);
+  }, [deliveredMessage]);
 }
 
 export default useWebSocket;
