@@ -98,5 +98,16 @@ class UserConnectionManager:
             }
         )
 
+    async def send_read_message_notification(self, sender_id: str, receiver_id: str):
+        receiverSocket = self.active_connections.get(receiver_id)
+        if not receiverSocket:
+            return
+        await receiverSocket.send_json(
+            {
+                "user_id": sender_id,
+                "type": MessageType.READ_MESSAGE,
+            }
+        )
+
 
 user_connection_manager = UserConnectionManager()

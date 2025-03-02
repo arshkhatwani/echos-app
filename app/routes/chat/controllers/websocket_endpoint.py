@@ -22,5 +22,10 @@ class WebSocketEndpoint:
                         message_id=data.get("id"),
                         timestamp=data.get("timestamp"),
                     )
+                elif data.get("type") == MessageType.READ_MESSAGE:
+                    await user_connection_manager.send_read_message_notification(
+                        sender_id=self.user_id,
+                        receiver_id=data.get("userId"),
+                    )
         except WebSocketDisconnect:
             await user_connection_manager.disconnect(self.user_id)
