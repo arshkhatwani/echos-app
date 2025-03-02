@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
-import React from "react";
+import React, { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { MessageStatus, MessageType } from "../enums";
 import {
@@ -12,12 +12,16 @@ import {
 import { Message } from "../types";
 import MessageStatusIcon from "./MessageStatusIcon";
 import Sidebar from "./Sidebar";
+import useScrollToBottom from "../hooks/useScrollToBottom";
 
 const Chat = () => {
   const [contacts, setContacts] = useAtom(contactsAtom);
   const [selectedChat] = useAtom(selectedChatAtom);
   const [newMessage, setNewMessage] = useAtom(newMessageAtom);
   const [, setSendMessage] = useAtom(sendMessageAtom);
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  useScrollToBottom(scrollRef.current, contacts);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,8 +90,8 @@ const Chat = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 bg-[#e5ded8] p-4 overflow-y-auto">
-          <div className="space-y-4">
+        <div className="flex-1 bg-[#e5ded8] p-4 pb-0 overflow-y-auto">
+          <div ref={scrollRef} className="space-y-4 pb-4">
             {contacts[selectedChat].messages.map((message: Message) => (
               <div
                 key={message.id}
