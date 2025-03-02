@@ -105,7 +105,11 @@ const Chat = () => {
                     <span className="text-xs text-gray-500 block">
                       {message.time}
                     </span>
-                    <MessageStatusIcon status={message.status} />
+                    {message.sent ? (
+                      <MessageStatusIcon status={message.status} />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
               </div>

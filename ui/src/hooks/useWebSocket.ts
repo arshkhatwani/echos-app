@@ -7,19 +7,35 @@ import {
   contactsAtom,
   deliveredMessageAtom,
   isAuthenticatedAtom,
+  readMessageAtom,
   receiveMessageAtom,
+  selectedChatAtom,
   sendMessageAtom,
 } from "../store/atoms";
-import { Message } from "../types";
+import { Message, ReadMessageRequest } from "../types";
 
 function useWebSocket() {
   const ws = useRef<WebSocket | null>(null);
   const [accessToken] = useAtom(accessTokenAtom);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
-  const [sendMessage, setSendMessage] = useAtom(sendMessageAtom);
+  const [selectedChat] = useAtom(selectedChatAtom);
   const [contacts, setContacts] = useAtom(contactsAtom);
+  const [sendMessage, setSendMessage] = useAtom(sendMessageAtom);
   const [receiveMessage, setReceiveMessage] = useAtom(receiveMessageAtom);
   const [deliveredMessage, setDeliveredMessage] = useAtom(deliveredMessageAtom);
+  const [readMessage, setReadMessage] = useAtom(readMessageAtom);
+
+  const sendReadMessageRequest = (userId: string) => {
+    const wsCurrent = ws.current;
+    if (!wsCurrent) return;
+
+    const message: ReadMessageRequest = {
+      userId: userId,
+      type: MessageType.READ_MESSAGE,
+    };
+
+    wsCurrent.send(JSON.stringify(message));
+  };
 
   useEffect(() => {
     if (!isAuthenticated || !accessToken) return;
@@ -49,6 +65,12 @@ function useWebSocket() {
             receiverId: data.receiver_id,
             type: MessageType.DELIVERED_MESSAGE,
             id: data.id,
+          });
+          break;
+        case MessageType.READ_MESSAGE:
+          setReadMessage({
+            userId: data.user_id,
+            type: MessageType.READ_MESSAGE,
           });
           break;
         default:
@@ -100,6 +122,11 @@ function useWebSocket() {
     setContacts(updatedContacts);
 
     setReceiveMessage(null);
+
+    // Send read message request current open chat is same as this contact
+    if (selectedChat === contactId) {
+      sendReadMessageRequest(selectedChat);
+    }
   }, [receiveMessage]);
 
   useEffect(() => {
@@ -127,6 +154,30 @@ function useWebSocket() {
 
     setDeliveredMessage(null);
   }, [deliveredMessage]);
+
+  useEffect(() => {
+    sendReadMessageRequest(selectedChat);
+  }, [selectedChat]);
+
+  useEffect(() => {
+    if (!readMessage) return;
+
+    const contactId = readMessage.userId;
+    if (!contacts[contactId])
+      //  TODO: Handle non added user
+      return;
+
+    const updatedContacts = { ...contacts };
+    updatedContacts[contactId] = {
+      ...updatedContacts[contactId],
+      messages: updatedContacts[contactId].messages.map((message: Message) => {
+        return { ...message, status: MessageStatus.READ };
+      }),
+    };
+    setContacts(updatedContacts);
+
+    setReadMessage(null);
+  }, [readMessage]);
 }
 
 export default useWebSocket;

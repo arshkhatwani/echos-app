@@ -45,3 +45,8 @@ export interface DeliveredMessageRequest {
   type: MessageType;
   id: string;
 }
+
+export interface ReadMessageRequest {
+  userId: string;
+  type: MessageType;
+}
