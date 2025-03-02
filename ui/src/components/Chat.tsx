@@ -1,11 +1,5 @@
 import { useAtom } from "jotai";
-import {
-  MoreVertical,
-  Paperclip,
-  Search,
-  Send,
-  Smile
-} from "lucide-react";
+import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { MessageStatus, MessageType } from "../enums";
@@ -53,6 +47,7 @@ const Chat = () => {
       receiverId: updatedContacts[selectedChat].id,
       type: MessageType.SEND_MESSAGE,
       id: message.id,
+      timestamp: message.time,
     });
 
     setContacts(updatedContacts);

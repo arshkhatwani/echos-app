@@ -29,6 +29,7 @@ export interface SendMessageRequest {
   receiverId: string;
   type: MessageType;
   id: string;
+  timestamp: string;
 }
 
 export interface ReceiveMessageRequest {
@@ -36,6 +37,7 @@ export interface ReceiveMessageRequest {
   message: string;
   type: MessageType;
   id: string;
+  timestamp: string;
 }
 
 export interface DeliveredMessageRequest {

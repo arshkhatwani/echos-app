@@ -41,6 +41,7 @@ function useWebSocket() {
             message: data.message,
             type: MessageType.SEND_MESSAGE,
             id: data.id,
+            timestamp: data.timestamp,
           });
           break;
         case MessageType.DELIVERED_MESSAGE:
@@ -83,10 +84,7 @@ function useWebSocket() {
     const message: Message = {
       id: contacts[contactId].messages.length + 1,
       content: receiveMessage.message,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      time: receiveMessage.timestamp,
       sent: false,
       status: MessageStatus.SENT,
     };

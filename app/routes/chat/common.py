@@ -20,7 +20,12 @@ class UserConnectionManager:
         self.active_connections.pop(user_id)
 
     async def send_personal_message(
-        self, sender_id: str, receiver_id: str, message: str, message_id: str
+        self,
+        sender_id: str,
+        receiver_id: str,
+        message: str,
+        message_id: str,
+        timestamp: str,
     ):
         receiver_socket = self.active_connections.get(receiver_id)
         if not receiver_socket:
@@ -29,6 +34,7 @@ class UserConnectionManager:
                 receiver_id=receiver_id,
                 message=message,
                 message_id=message_id,
+                timestamp=timestamp,
             )
             return False
 
@@ -41,12 +47,18 @@ class UserConnectionManager:
                 "message": message,
                 "type": MessageType.SEND_MESSAGE,
                 "id": message_id,
+                "timestamp": timestamp,
             }
         )
         return True
 
     async def _save_personal_message(
-        self, sender_id: str, receiver_id: str, message: str, message_id: str
+        self,
+        sender_id: str,
+        receiver_id: str,
+        message: str,
+        message_id: str,
+        timestamp: str,
     ):
         async with get_db() as db:
             await PendingMessage.create(
@@ -56,6 +68,7 @@ class UserConnectionManager:
                 type=MessageType.SEND_MESSAGE,
                 message=message,
                 id=message_id,
+                timestamp=timestamp,
             )
 
     async def _send_pending_messages(self, user_id: str):
