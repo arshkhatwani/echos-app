@@ -1,6 +1,10 @@
 from uuid import uuid4
+
+from fastapi import HTTPException, status
+
 from sqlalchemy import Column, String, ForeignKey, UniqueConstraint
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 
 from app.services.db.postgres.database import Base
 
@@ -20,6 +24,13 @@ class ChatLibrary(Base):
         id = str(uuid4())
         transaction = cls(id=id, user_id=user_id, contact_id=contact_id)
         db.add(transaction)
-        await db.commit()
-        await db.refresh(transaction)
+        try:
+            await db.commit()
+            await db.refresh(transaction)
+        except IntegrityError:
+            await db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User already has this contact",
+            )
         return transaction
