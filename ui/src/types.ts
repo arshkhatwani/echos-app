@@ -17,7 +17,7 @@ export interface Contact {
   messages: Message[];
 }
 
-export type ContactsMap = Record<any, any>;
+export type ContactsMap = Record<any, Contact>;
 
 export interface User {
   name: string;
