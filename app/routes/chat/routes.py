@@ -6,6 +6,8 @@ from app.services.jwt.service import (
 from app.routes.chat.controllers.websocket_endpoint import WebSocketEndpoint
 from app.routes.chat.controllers.search_users import SearchUsers
 from app.routes.chat.controllers.add_user_in_chat import AddUserInChat
+from app.routes.chat.controllers.get_chat_library import GetChatLibrary
+
 from app.routes.chat.models import AddUserRequest, SearchUserResult, SuccessResponse
 
 router = APIRouter(
@@ -33,7 +35,7 @@ async def search_users(
 
 
 @router.post(
-    "/user",
+    "/library/user",
     description="Add user in chat library",
     response_model=SuccessResponse,
     status_code=201,
@@ -43,3 +45,14 @@ async def add_user_in_chat(
     user_id: str = Depends(get_user_id_from_token),
 ) -> SuccessResponse:
     return await AddUserInChat(user_id=user_id, user=user).handle_request()
+
+
+@router.get(
+    "/library",
+    response_model=list[SearchUserResult],
+    description="Get chat library of the user",
+)
+async def get_chat_library(
+    user_id: str = Depends(get_user_id_from_token),
+) -> list[SearchUserResult]:
+    return await GetChatLibrary(user_id=user_id).handle_request()

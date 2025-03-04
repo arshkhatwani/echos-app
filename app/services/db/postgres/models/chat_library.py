@@ -2,11 +2,14 @@ from uuid import uuid4
 
 from fastapi import HTTPException, status
 
-from sqlalchemy import Column, String, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, String, ForeignKey, UniqueConstraint, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
+from typing import Sequence
+
 from app.services.db.postgres.database import Base
+from app.services.db.postgres.models import User
 
 
 class ChatLibrary(Base):
@@ -34,3 +37,15 @@ class ChatLibrary(Base):
                 detail="User already has this contact",
             )
         return transaction
+
+    @classmethod
+    async def get_chat_library_by_user_id(
+        cls, db: AsyncSession, user_id: str
+    ) -> Sequence[User]:
+        query = (
+            select(User, cls)
+            .join(User, User.id == cls.contact_id)
+            .filter(cls.user_id == user_id)
+        )
+        transaction = await db.scalars(query)
+        return transaction.all()
