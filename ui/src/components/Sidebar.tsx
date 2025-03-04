@@ -6,11 +6,14 @@ import {
 } from "../store/atoms";
 import ProfileDropdown from "./ProfileDropdown";
 import SearchUsers from "./SearchUsers";
+import useChatContacts from "../hooks/useChatContacts";
 
 function Sidebar() {
   const [currentUser] = useAtom(currentUserAtom);
   const [contacts] = useAtom(contactsAtom);
   const [selectedChat, setSelectedChat] = useAtom(selectedChatAtom);
+
+  useChatContacts();
 
   return (
     <>
