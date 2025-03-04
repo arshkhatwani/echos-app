@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { chat, SearchUserResponse } from "../api/chat";
 import { SAMPLE_AVATAR } from "../config/constants";
 import { useDebounceAsync } from "../hooks/useDebounceAsync";
-import { accessTokenAtom, contactsAtom, selectedChatAtom } from "../store/atoms";
+import {
+  accessTokenAtom,
+  contactsAtom,
+  selectedChatAtom,
+} from "../store/atoms";
 
 function SearchUsers() {
   const searchUsers = useDebounceAsync(chat.searchUsers, 2000);
