@@ -3,6 +3,8 @@ export const API_CONFIG = {
   LOGIN_ENDPOINT: "/auth/login",
   SEARCH_USERS_ENDPOINT: "/chat/users",
   WEBSOCKET_URL: "ws://localhost:8000/chat/ws",
+  GET_CHAT_LIBRARY_ENDPOINT: "/chat/library",
+  ADD_USER_IN_CHAT_LIBRARY_ENDPOINT: "/chat/library/user",
 } as const;
 
 export const SAMPLE_AVATAR =
