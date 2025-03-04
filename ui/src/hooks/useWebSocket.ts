@@ -104,7 +104,7 @@ function useWebSocket() {
       return;
 
     const message: Message = {
-      id: contacts[contactId].messages.length + 1,
+      id: receiveMessage.id,
       content: receiveMessage.message,
       time: receiveMessage.timestamp,
       sent: false,
