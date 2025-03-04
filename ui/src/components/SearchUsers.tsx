@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { chat, SearchUserResponse } from "../api/chat";
 import { SAMPLE_AVATAR } from "../config/constants";
 import { useDebounceAsync } from "../hooks/useDebounceAsync";
-import { accessTokenAtom, contactsAtom } from "../store/atoms";
+import { accessTokenAtom, contactsAtom, selectedChatAtom } from "../store/atoms";
 
 function SearchUsers() {
   const searchUsers = useDebounceAsync(chat.searchUsers, 2000);
 
   const [accessToken] = useAtom(accessTokenAtom);
   const [contacts, setContacts] = useAtom(contactsAtom);
+  const [, setSelectedChat] = useAtom(selectedChatAtom);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchUserResponse[]>([]);
@@ -30,6 +31,8 @@ function SearchUsers() {
       messages: [],
     };
     setContacts(contactsCopy);
+    setSelectedChat(user.user_id);
+    chat.addUserInChatLibrary(user.user_id, accessToken as string);
   };
 
   useEffect(() => {
