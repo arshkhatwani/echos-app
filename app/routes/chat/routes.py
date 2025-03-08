@@ -8,7 +8,7 @@ from app.routes.chat.controllers.search_users import SearchUsers
 from app.routes.chat.controllers.add_user_in_chat import AddUserInChat
 from app.routes.chat.controllers.get_chat_library import GetChatLibrary
 
-from app.routes.chat.models import AddUserRequest, SearchUserResult, SuccessResponse
+from app.routes.chat.models import AddUserRequest, SearchUserResult, AddUserResponse
 
 router = APIRouter(
     prefix="/chat",
@@ -37,13 +37,13 @@ async def search_users(
 @router.post(
     "/library/user",
     description="Add user in chat library",
-    response_model=SuccessResponse,
+    response_model=AddUserResponse,
     status_code=201,
 )
 async def add_user_in_chat(
     user: AddUserRequest,
     user_id: str = Depends(get_user_id_from_token),
-) -> SuccessResponse:
+) -> AddUserResponse:
     return await AddUserInChat(user_id=user_id, user=user).handle_request()
 
 

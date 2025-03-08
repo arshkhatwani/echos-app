@@ -43,3 +43,9 @@ class User(Base):
         )
         transaction = await db.scalars(query)
         return transaction.all()
+
+    @classmethod
+    async def get_user_by_id(cls, db: AsyncSession, user_id: str):
+        query = select(cls).filter(cls.id == user_id)
+        transaction = await db.scalars(query)
+        return transaction.first()

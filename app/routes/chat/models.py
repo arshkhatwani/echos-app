@@ -10,5 +10,7 @@ class AddUserRequest(BaseModel):
     id: str
 
 
-class SuccessResponse(BaseModel):
+class AddUserResponse(BaseModel):
     message: str
+    user_id: str
+    username: str
