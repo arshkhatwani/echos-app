@@ -50,3 +50,7 @@ export interface ReadMessageRequest {
   userId: string;
   type: MessageType;
 }
+
+export interface UnknownUser {
+  userId: string;
+}

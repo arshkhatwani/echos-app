@@ -5,6 +5,7 @@ import {
   ReadMessageRequest,
   ReceiveMessageRequest,
   SendMessageRequest,
+  UnknownUser,
   User,
 } from "../types";
 
@@ -26,3 +27,4 @@ export const sendMessageAtom = atom<SendMessageRequest | null>(null);
 export const receiveMessageAtom = atom<ReceiveMessageRequest | null>(null);
 export const deliveredMessageAtom = atom<DeliveredMessageRequest | null>(null);
 export const readMessageAtom = atom<ReadMessageRequest | null>(null);
+export const unknownUserAtom = atom<UnknownUser | null>(null);
