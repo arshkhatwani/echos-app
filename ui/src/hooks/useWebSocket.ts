@@ -11,6 +11,7 @@ import {
   receiveMessageAtom,
   selectedChatAtom,
   sendMessageAtom,
+  startWebSocketAtom,
 } from "../store/atoms";
 import { Message, ReadMessageRequest } from "../types";
 
@@ -18,6 +19,7 @@ function useWebSocket() {
   const ws = useRef<WebSocket | null>(null);
   const [accessToken] = useAtom(accessTokenAtom);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [startWebSocket] = useAtom(startWebSocketAtom);
   const [selectedChat] = useAtom(selectedChatAtom);
   const [contacts, setContacts] = useAtom(contactsAtom);
   const [sendMessage, setSendMessage] = useAtom(sendMessageAtom);
@@ -38,6 +40,7 @@ function useWebSocket() {
   };
 
   useEffect(() => {
+    if (!startWebSocket) return;
     if (!isAuthenticated || !accessToken) return;
 
     ws.current = new WebSocket(
@@ -82,7 +85,7 @@ function useWebSocket() {
     return () => {
       wsCurrent?.close();
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, startWebSocket]);
 
   useEffect(() => {
     if (!sendMessage) return;

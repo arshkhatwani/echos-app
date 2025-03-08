@@ -12,6 +12,8 @@ import {
 export const accessTokenAtom = atom<string | null>(null);
 export const isAuthenticatedAtom = atom<boolean>(false);
 
+export const startWebSocketAtom = atom<boolean>(false);
+
 export const currentUserAtom = atom<User>({
   name: "Alex Thompson",
   avatar:
