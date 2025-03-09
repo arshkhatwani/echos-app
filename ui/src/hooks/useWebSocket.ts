@@ -161,6 +161,8 @@ function useWebSocket() {
     const contactId = deliveredMessage.receiverId;
     if (!contacts[contactId])
       //  TODO: Handle non added user
+      // Doesn't make sense right now since user must already be added to contacts
+      // since we're receiving a delivered message event
       return;
 
     const updatedContacts = { ...contacts };
@@ -191,6 +193,8 @@ function useWebSocket() {
     const contactId = readMessage.userId;
     if (!contacts[contactId])
       //  TODO: Handle non added user
+      // Doesn't make sense right now since user must already be added to contacts
+      // since we're receiving a read message event
       return;
 
     const updatedContacts = { ...contacts };
