@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
-import { API_CONFIG } from "../config/constants";
+import { chat } from "../api/chat";
+import { API_CONFIG, SAMPLE_AVATAR } from "../config/constants";
 import { MessageStatus, MessageType } from "../enums";
 import {
   accessTokenAtom,
@@ -37,6 +38,25 @@ function useWebSocket() {
     };
 
     wsCurrent.send(JSON.stringify(message));
+  };
+
+  const updateContacts = async (contactId: string) => {
+    const data = await chat.addUserInChatLibrary(
+      contactId,
+      accessToken as string,
+    );
+    const updatedContacts = {
+      ...contacts,
+      [contactId]: {
+        id: contactId,
+        name: data.username,
+        lastMessage: "",
+        time: "",
+        avatar: SAMPLE_AVATAR,
+        messages: [],
+      },
+    };
+    return updatedContacts;
   };
 
   useEffect(() => {
@@ -101,35 +121,38 @@ function useWebSocket() {
   useEffect(() => {
     if (!receiveMessage) return;
 
-    const contactId = receiveMessage.senderId;
-    if (!contacts[contactId])
-      //  TODO: Handle non added user
-      return;
+    const handleReceiveMessage = async () => {
+      const contactId = receiveMessage.senderId;
+      const updatedContacts = !contacts[contactId]
+        ? await updateContacts(contactId)
+        : { ...contacts };
 
-    const message: Message = {
-      id: receiveMessage.id,
-      content: receiveMessage.message,
-      time: receiveMessage.timestamp,
-      sent: false,
-      status: MessageStatus.SENT,
+      const message: Message = {
+        id: receiveMessage.id,
+        content: receiveMessage.message,
+        time: receiveMessage.timestamp,
+        sent: false,
+        status: MessageStatus.SENT,
+      };
+
+      updatedContacts[contactId] = {
+        ...updatedContacts[contactId],
+        messages: [...updatedContacts[contactId].messages, message],
+        lastMessage: message.content,
+        time: message.time,
+      };
+
+      setContacts(updatedContacts);
+
+      setReceiveMessage(null);
+
+      // Send read message request current open chat is same as this contact
+      if (selectedChat === contactId) {
+        sendReadMessageRequest(selectedChat);
+      }
     };
 
-    const updatedContacts = { ...contacts };
-    updatedContacts[contactId] = {
-      ...updatedContacts[contactId],
-      messages: [...updatedContacts[contactId].messages, message],
-      lastMessage: message.content,
-      time: message.time,
-    };
-    ``;
-    setContacts(updatedContacts);
-
-    setReceiveMessage(null);
-
-    // Send read message request current open chat is same as this contact
-    if (selectedChat === contactId) {
-      sendReadMessageRequest(selectedChat);
-    }
+    handleReceiveMessage().catch(console.error);
   }, [receiveMessage]);
 
   useEffect(() => {
