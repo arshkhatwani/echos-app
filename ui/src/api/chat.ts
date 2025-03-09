@@ -6,8 +6,10 @@ export interface SearchUserResponse {
   user_id: string;
 }
 
-export interface SuccessResponse {
+export interface AddUserResponse {
   message: string;
+  user_id: string;
+  username: string;
 }
 
 export const chat = {
@@ -42,8 +44,8 @@ export const chat = {
   async addUserInChatLibrary(
     userId: string,
     accessToken: string,
-  ): Promise<SuccessResponse> {
-    const response = await axios.post<SuccessResponse>(
+  ): Promise<AddUserResponse> {
+    const response = await axios.post<AddUserResponse>(
       `${API_CONFIG.SERVER_URL}${API_CONFIG.ADD_USER_IN_CHAT_LIBRARY_ENDPOINT}`,
       {
         id: userId,
