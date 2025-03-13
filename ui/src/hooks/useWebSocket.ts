@@ -75,13 +75,16 @@ function useWebSocket() {
       const data = JSON.parse(event.data);
       switch (data.type) {
         case MessageType.SEND_MESSAGE:
-          setReceiveMessage({
-            senderId: data.sender_id,
-            message: data.message,
-            type: MessageType.SEND_MESSAGE,
-            id: data.id,
-            timestamp: data.timestamp,
-          });
+          setReceiveMessage((prev) => [
+            ...prev,
+            {
+              senderId: data.sender_id,
+              message: data.message,
+              type: MessageType.SEND_MESSAGE,
+              id: data.id,
+              timestamp: data.timestamp,
+            },
+          ]);
           break;
         case MessageType.DELIVERED_MESSAGE:
           setDeliveredMessage({
@@ -119,18 +122,18 @@ function useWebSocket() {
   }, [sendMessage]);
 
   useEffect(() => {
-    if (!receiveMessage) return;
+    if (!receiveMessage.length) return;
 
     const handleReceiveMessage = async () => {
-      const contactId = receiveMessage.senderId;
+      const contactId = receiveMessage[0].senderId;
       const updatedContacts = !contacts[contactId]
         ? await updateContacts(contactId)
         : { ...contacts };
 
       const message: Message = {
-        id: receiveMessage.id,
-        content: receiveMessage.message,
-        time: receiveMessage.timestamp,
+        id: receiveMessage[0].id,
+        content: receiveMessage[0].message,
+        time: receiveMessage[0].timestamp,
         sent: false,
         status: MessageStatus.SENT,
       };
@@ -144,7 +147,7 @@ function useWebSocket() {
 
       setContacts(updatedContacts);
 
-      setReceiveMessage(null);
+      setReceiveMessage((prev) => prev.slice(1));
 
       // Send read message request current open chat is same as this contact
       if (selectedChat === contactId) {

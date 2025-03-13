@@ -26,7 +26,7 @@ export const selectedChatAtom = atom<string>("");
 export const newMessageAtom = atom<string>("");
 
 export const sendMessageAtom = atom<SendMessageRequest | null>(null);
-export const receiveMessageAtom = atom<ReceiveMessageRequest | null>(null);
+export const receiveMessageAtom = atom<ReceiveMessageRequest[]>([]);
 export const deliveredMessageAtom = atom<DeliveredMessageRequest | null>(null);
 export const readMessageAtom = atom<ReadMessageRequest | null>(null);
 export const unknownUserAtom = atom<UnknownUser | null>(null);
