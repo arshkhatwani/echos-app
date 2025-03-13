@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import Login from "./components/Login";
 import Chat from "./components/Chat";
 import { isAuthenticatedAtom } from "./store/atoms";
-import useWebSocket from "./hooks/useWebsocket";
+import useWebSocket from "./hooks/useWebSocket";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
