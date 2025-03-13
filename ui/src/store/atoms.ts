@@ -27,6 +27,6 @@ export const newMessageAtom = atom<string>("");
 
 export const sendMessageAtom = atom<SendMessageRequest | null>(null);
 export const receiveMessageAtom = atom<ReceiveMessageRequest[]>([]);
-export const deliveredMessageAtom = atom<DeliveredMessageRequest | null>(null);
-export const readMessageAtom = atom<ReadMessageRequest | null>(null);
+export const deliveredMessageAtom = atom<DeliveredMessageRequest[]>([]);
+export const readMessageAtom = atom<ReadMessageRequest[]>([]);
 export const unknownUserAtom = atom<UnknownUser | null>(null);

@@ -87,17 +87,23 @@ function useWebSocket() {
           ]);
           break;
         case MessageType.DELIVERED_MESSAGE:
-          setDeliveredMessage({
-            receiverId: data.receiver_id,
-            type: MessageType.DELIVERED_MESSAGE,
-            id: data.id,
-          });
+          setDeliveredMessage((prev) => [
+            ...prev,
+            {
+              receiverId: data.receiver_id,
+              type: MessageType.DELIVERED_MESSAGE,
+              id: data.id,
+            },
+          ]);
           break;
         case MessageType.READ_MESSAGE:
-          setReadMessage({
-            userId: data.user_id,
-            type: MessageType.READ_MESSAGE,
-          });
+          setReadMessage((prev) => [
+            ...prev,
+            {
+              userId: data.user_id,
+              type: MessageType.READ_MESSAGE,
+            },
+          ]);
           break;
         default:
           console.log("Unknown message type:", data.type);
@@ -159,9 +165,9 @@ function useWebSocket() {
   }, [receiveMessage]);
 
   useEffect(() => {
-    if (!deliveredMessage) return;
+    if (!deliveredMessage.length) return;
 
-    const contactId = deliveredMessage.receiverId;
+    const contactId = deliveredMessage[0].receiverId;
     if (!contacts[contactId])
       //  TODO: Handle non added user
       // Doesn't make sense right now since user must already be added to contacts
@@ -172,7 +178,7 @@ function useWebSocket() {
     updatedContacts[contactId] = {
       ...updatedContacts[contactId],
       messages: updatedContacts[contactId].messages.map((message: Message) => {
-        if (message.id === deliveredMessage.id) {
+        if (message.id === deliveredMessage[0].id) {
           return {
             ...message,
             status: MessageStatus.DELIVERED,
@@ -183,7 +189,7 @@ function useWebSocket() {
     };
     setContacts(updatedContacts);
 
-    setDeliveredMessage(null);
+    setDeliveredMessage((prev) => prev.slice(1));
   }, [deliveredMessage]);
 
   useEffect(() => {
@@ -191,9 +197,9 @@ function useWebSocket() {
   }, [selectedChat]);
 
   useEffect(() => {
-    if (!readMessage) return;
+    if (!readMessage.length) return;
 
-    const contactId = readMessage.userId;
+    const contactId = readMessage[0].userId;
     if (!contacts[contactId])
       //  TODO: Handle non added user
       // Doesn't make sense right now since user must already be added to contacts
@@ -209,7 +215,7 @@ function useWebSocket() {
     };
     setContacts(updatedContacts);
 
-    setReadMessage(null);
+    setReadMessage((prev) => prev.slice(1));
   }, [readMessage]);
 }
 
