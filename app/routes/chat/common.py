@@ -1,5 +1,7 @@
 import asyncio
 from fastapi import WebSocket
+from typing import Sequence
+
 from app.services.db.postgres.database import get_db
 from app.services.db.postgres.models.pending_message import PendingMessage
 from app.routes.chat.constants import MessageType
@@ -77,9 +79,12 @@ class UserConnectionManager:
             result = await PendingMessage.get_pending_messages_for_receiver(
                 db=db, receiver_id=user_id
             )
+
         await asyncio.gather(
             *[websocket.send_json(self._reformat_message(msg)) for msg in result]
         )
+
+        await self._send_delivered_notifications(result)
 
     def _reformat_message(self, message: PendingMessage):
         return {k: v for k, v in message.__dict__.items() if k != "_sa_instance_state"}
@@ -107,6 +112,20 @@ class UserConnectionManager:
                 "user_id": sender_id,
                 "type": MessageType.READ_MESSAGE,
             }
+        )
+
+    async def _send_delivered_notifications(self, messages: Sequence[PendingMessage]):
+        """
+        Sends delivered message notifications to the receiver for all pending messages
+        """
+        await asyncio.gather(
+            *[
+                self._send_delivered_message_notification(
+                    str(msg.sender_id), str(msg.receiver_id), str(msg.id)
+                )
+                for msg in messages
+                if msg.type == MessageType.SEND_MESSAGE
+            ]
         )
 
 
