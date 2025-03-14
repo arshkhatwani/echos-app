@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { MoreVertical } from "lucide-react";
+import { useState } from "react";
+import LogoutBtn from "./LogoutBtn";
 
 function ProfileDropdown() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -16,12 +17,7 @@ function ProfileDropdown() {
       </button>
       {isDropdownOpen && (
         <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
-          <button
-            //   onClick={handleLogout}
-            className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-          >
-            <span>Logout</span>
-          </button>
+          <LogoutBtn />
         </div>
       )}
     </div>
