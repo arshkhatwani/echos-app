@@ -5,6 +5,7 @@ export const API_CONFIG = {
   WEBSOCKET_URL: "ws://localhost:8000/chat/ws",
   GET_CHAT_LIBRARY_ENDPOINT: "/chat/library",
   ADD_USER_IN_CHAT_LIBRARY_ENDPOINT: "/chat/library/user",
+  GET_USER_ENDPOINT: "/auth/user",
 } as const;
 
 export const SAMPLE_AVATAR =

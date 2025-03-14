@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import {
   ContactsMap,
   DeliveredMessageRequest,
@@ -9,7 +10,10 @@ import {
   User,
 } from "../types";
 
-export const accessTokenAtom = atom<string | null>(null);
+export const accessTokenAtom = atomWithStorage<string | null>(
+  "accessToken",
+  null,
+);
 export const isAuthenticatedAtom = atom<boolean>(false);
 
 export const startWebSocketAtom = atom<boolean>(false);
