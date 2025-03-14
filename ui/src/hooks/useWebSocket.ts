@@ -60,8 +60,13 @@ function useWebSocket() {
   };
 
   useEffect(() => {
-    if (!startWebSocket) return;
-    if (!isAuthenticated || !accessToken) return;
+    if (!startWebSocket || !isAuthenticated || !accessToken) {
+      const wsCurrent = ws.current;
+      if (wsCurrent) {
+        wsCurrent.close();
+      }
+      return;
+    }
 
     ws.current = new WebSocket(
       `${API_CONFIG.WEBSOCKET_URL}?token=${accessToken}`,
