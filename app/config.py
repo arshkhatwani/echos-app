@@ -13,6 +13,7 @@ class Config:
     )
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "secret")
     JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+    BASE_AI_MODEL = os.getenv("BASE_AI_MODEL", "deepseek-r1")
 
 
 config = Config

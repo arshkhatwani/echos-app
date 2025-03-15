@@ -20,3 +20,6 @@ quality-check:
 	make lint
 	make format
 	make type-check
+
+create-model:
+	PYTHONPATH=. python app/services/ai/ollama/create_model.py
