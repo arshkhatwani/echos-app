@@ -31,7 +31,7 @@ class OllamaService:
     async def get_message_composition(self, prompt: str) -> str:
         prompt = self.get_prompt(TaskType.MESSAGE_COMPOSITION, prompt)
         response = await self.generate_and_parse_xml(prompt)
-        return response
+        return xmltodict.parse(response).get("response", {}).get("message", "")
 
     async def get_text_completion(self, initial_phrase: str) -> str:
         prompt = self.get_prompt(TaskType.TEXT_COMPLETION, initial_phrase)
