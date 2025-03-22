@@ -30,8 +30,10 @@ def init_app(init_db=True):
 
     from app.routes.auth.routes import router as auth_router
     from app.routes.chat.routes import router as chat_router
+    from app.routes.ai.routes import router as ai_router
 
     server.include_router(auth_router)
     server.include_router(chat_router)
+    server.include_router(ai_router)
 
     return server
