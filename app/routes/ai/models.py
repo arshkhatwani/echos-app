@@ -7,3 +7,7 @@ class MessageRequest(BaseModel):
 
 class ReplySuggestionsResponse(BaseModel):
     reply: list[str]
+
+
+class MessageCompositionResponse(BaseModel):
+    message: str
