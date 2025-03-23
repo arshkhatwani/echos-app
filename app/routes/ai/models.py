@@ -15,3 +15,7 @@ class MessageCompositionResponse(BaseModel):
 
 class TextCompletionResponse(BaseModel):
     completion: str
+
+
+class RephraseResponse(BaseModel):
+    rephrase: str

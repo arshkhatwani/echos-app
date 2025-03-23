@@ -4,11 +4,13 @@ from app.services.jwt.service import get_user_id_from_token
 from app.routes.ai.controllers.get_reply_suggestions import GetReplySuggestions
 from app.routes.ai.controllers.get_message_composition import GetMessageComposition
 from app.routes.ai.controllers.get_text_completion import GetTextCompletion
+from app.routes.ai.controllers.get_rephrase import GetRephrase
 from app.routes.ai.models import (
     MessageRequest,
     ReplySuggestionsResponse,
     MessageCompositionResponse,
     TextCompletionResponse,
+    RephraseResponse,
 )
 
 router = APIRouter(
@@ -45,3 +47,11 @@ async def get_text_completion(
     return await GetTextCompletion(
         user_id=user_id, message=request.message
     ).handle_request()
+
+
+@router.post("/rephrase", response_model=RephraseResponse)
+async def get_rephrase(
+    request: MessageRequest,
+    user_id: str = Depends(get_user_id_from_token),
+) -> RephraseResponse:
+    return await GetRephrase(user_id=user_id, message=request.message).handle_request()
