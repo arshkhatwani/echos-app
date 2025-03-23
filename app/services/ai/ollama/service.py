@@ -26,7 +26,9 @@ class OllamaService:
     async def get_reply_suggestions(self, message: str) -> list[str]:
         prompt = self.get_prompt(TaskType.REPLY_SUGGESTIONS, message)
         response = await self.generate_and_parse_xml(prompt)
-        return xmltodict.parse(response).get("response", {}).get("reply", [])
+        return self._ensure_list(
+            xmltodict.parse(response).get("response", {}).get("reply", [])
+        )
 
     async def get_message_composition(self, prompt: str) -> str:
         prompt = self.get_prompt(TaskType.MESSAGE_COMPOSITION, prompt)
@@ -51,10 +53,9 @@ class OllamaService:
     async def get_one_word_replies(self, original_text: str) -> list[str]:
         prompt = self.get_prompt(TaskType.ONE_WORD_REPLIES, original_text)
         response = await self.generate_and_parse_xml(prompt)
-        one_word_replies = (
+        return self._ensure_list(
             xmltodict.parse(response).get("response", {}).get("one_word_reply", [])
         )
-        return self._ensure_list(one_word_replies)
 
     def _extract_xml_string(self, xml_string) -> str:
         start_index = xml_string.find("```xml")
