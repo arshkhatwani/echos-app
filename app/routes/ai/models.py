@@ -11,3 +11,7 @@ class ReplySuggestionsResponse(BaseModel):
 
 class MessageCompositionResponse(BaseModel):
     message: str
+
+
+class TextCompletionResponse(BaseModel):
+    completion: str
