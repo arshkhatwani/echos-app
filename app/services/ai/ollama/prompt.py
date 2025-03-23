@@ -30,7 +30,7 @@ IMPORTANT: Ensure that each response is enclosed within the appropriate XML-styl
 6. One word replies:
    - Respond with a single word or phrase that captures the essence of the original text.
    - Enclose a one-word reply within a `<one_word_reply>` tag.
-   - Provide multiple suggestions for one-word replies if applicable enclosing each suggestion within a `<one_word_reply>` tag.
+   - Provide multiple suggestions (Maximum of 3) for one-word replies if applicable enclosing each suggestion within a `<one_word_reply>` tag.
 
 For each task, ensure that your responses are concise, contextually appropriate, and adhere to standard language conventions.
 
