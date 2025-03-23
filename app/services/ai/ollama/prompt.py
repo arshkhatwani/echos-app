@@ -7,6 +7,7 @@ IMPORTANT: Ensure that each response is enclosed within the appropriate XML-styl
 
 1. Reply Suggestions:
    - Analyze the user's message and provide appropriate reply suggestions that are contextually relevant and maintain the intended tone.
+   - Provide maximum of 3 suggestions.
    - Enclose each suggestion within a `<reply>` tag.
 
 2. Message Composition
