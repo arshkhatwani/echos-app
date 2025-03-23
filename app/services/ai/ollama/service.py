@@ -15,7 +15,7 @@ class OllamaService:
 
     async def generate_and_parse_xml(self, prompt: str) -> str:
         result = await self.generate(prompt)
-        return self.extract_xml_string(result)
+        return self._extract_xml_string(result)
 
     def get_prompt(self, task: TaskType, message: str) -> str:
         return f"""
@@ -48,15 +48,23 @@ class OllamaService:
         response = await self.generate_and_parse_xml(prompt)
         return xmltodict.parse(response).get("response", {}).get("summary", "")
 
-    async def get_one_word_replies(self, original_text: str) -> str:
+    async def get_one_word_replies(self, original_text: str) -> list[str]:
         prompt = self.get_prompt(TaskType.ONE_WORD_REPLIES, original_text)
         response = await self.generate_and_parse_xml(prompt)
-        return response
+        one_word_replies = (
+            xmltodict.parse(response).get("response", {}).get("one_word_reply", [])
+        )
+        return self._ensure_list(one_word_replies)
 
-    def extract_xml_string(self, xml_string):
+    def _extract_xml_string(self, xml_string) -> str:
         start_index = xml_string.find("```xml")
         end_index = xml_string.find("```", start_index + 1)
         return xml_string[start_index + 6 : end_index]
+
+    def _ensure_list(self, value: list[str] | str) -> list[str]:
+        if isinstance(value, str):
+            return [value]
+        return value
 
 
 ollama_service = OllamaService()
