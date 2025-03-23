@@ -46,7 +46,7 @@ class OllamaService:
     async def get_summarization(self, original_text: str) -> str:
         prompt = self.get_prompt(TaskType.SUMMARIZATION, original_text)
         response = await self.generate_and_parse_xml(prompt)
-        return response
+        return xmltodict.parse(response).get("response", {}).get("summary", "")
 
     async def get_one_word_replies(self, original_text: str) -> str:
         prompt = self.get_prompt(TaskType.ONE_WORD_REPLIES, original_text)

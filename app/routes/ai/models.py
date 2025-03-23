@@ -19,3 +19,7 @@ class TextCompletionResponse(BaseModel):
 
 class RephraseResponse(BaseModel):
     rephrase: str
+
+
+class SummarizationResponse(BaseModel):
+    summary: str

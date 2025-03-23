@@ -5,12 +5,14 @@ from app.routes.ai.controllers.get_reply_suggestions import GetReplySuggestions
 from app.routes.ai.controllers.get_message_composition import GetMessageComposition
 from app.routes.ai.controllers.get_text_completion import GetTextCompletion
 from app.routes.ai.controllers.get_rephrase import GetRephrase
+from app.routes.ai.controllers.get_summarization import GetSummarization
 from app.routes.ai.models import (
     MessageRequest,
     ReplySuggestionsResponse,
     MessageCompositionResponse,
     TextCompletionResponse,
     RephraseResponse,
+    SummarizationResponse,
 )
 
 router = APIRouter(
@@ -55,3 +57,13 @@ async def get_rephrase(
     user_id: str = Depends(get_user_id_from_token),
 ) -> RephraseResponse:
     return await GetRephrase(user_id=user_id, message=request.message).handle_request()
+
+
+@router.post("/summarization", response_model=SummarizationResponse)
+async def get_summarization(
+    request: MessageRequest,
+    user_id: str = Depends(get_user_id_from_token),
+) -> SummarizationResponse:
+    return await GetSummarization(
+        user_id=user_id, message=request.message
+    ).handle_request()
