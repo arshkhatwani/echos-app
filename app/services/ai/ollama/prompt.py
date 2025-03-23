@@ -14,7 +14,9 @@ IMPORTANT: Ensure that each response is enclosed within the appropriate XML-styl
    - Enclose the composed message within a `<message>` tag.
 
 3. Text Completion:
-   - Given the initial phrase or sentence, complete the text in a manner that aligns with the context and maintains logical flow.
+   - Given the initial phrase or sentence, suggest the next word or sequence of words that align with the context and maintain logical flow.
+   - Provide only rest of the text excluding the initial phrase or sentence.
+   - Return only single answer, do not provide multiple answers.
    - Enclose the completed text within a `<completion>` tag.
 
 4. Rephrasing:
@@ -63,6 +65,27 @@ Examples:
      <completion>effective communication, clear goal setting, and proactive risk management.</completion>
      </response>
      ```
+   
+   - Initial Phrase: "Today I'm going to"
+   - AI's Completion:
+     ```xml
+     <response>
+     <completion>play football</completion>
+     </response>
+
+   - Initial Phrase: "We are having"
+   - AI's Completion:
+     ```xml
+     <response>
+     <completion>food</completion>
+     </response>
+
+   - Initial Phrase: "I will eat this after"
+   - AI's Completion:
+     ```xml
+     <response>
+     <completion>lunch</completion>
+     </response>
 
 4. Rephrasing:
    - Original Text: "We are excited to announce the launch of our new product next month."
