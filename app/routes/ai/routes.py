@@ -6,6 +6,7 @@ from app.routes.ai.controllers.get_message_composition import GetMessageComposit
 from app.routes.ai.controllers.get_text_completion import GetTextCompletion
 from app.routes.ai.controllers.get_rephrase import GetRephrase
 from app.routes.ai.controllers.get_summarization import GetSummarization
+from app.routes.ai.controllers.get_one_word_replies import GetOneWordReplies
 from app.routes.ai.models import (
     MessageRequest,
     ReplySuggestionsResponse,
@@ -13,6 +14,7 @@ from app.routes.ai.models import (
     TextCompletionResponse,
     RephraseResponse,
     SummarizationResponse,
+    OneWordRepliesResponse,
 )
 
 router = APIRouter(
@@ -65,5 +67,15 @@ async def get_summarization(
     user_id: str = Depends(get_user_id_from_token),
 ) -> SummarizationResponse:
     return await GetSummarization(
+        user_id=user_id, message=request.message
+    ).handle_request()
+
+
+@router.post("/one-word-replies", response_model=OneWordRepliesResponse)
+async def get_one_word_replies(
+    request: MessageRequest,
+    user_id: str = Depends(get_user_id_from_token),
+) -> OneWordRepliesResponse:
+    return await GetOneWordReplies(
         user_id=user_id, message=request.message
     ).handle_request()

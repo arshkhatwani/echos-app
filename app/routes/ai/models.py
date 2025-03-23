@@ -23,3 +23,7 @@ class RephraseResponse(BaseModel):
 
 class SummarizationResponse(BaseModel):
     summary: str
+
+
+class OneWordRepliesResponse(BaseModel):
+    one_word_replies: list[str]
