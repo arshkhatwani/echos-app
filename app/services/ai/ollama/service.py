@@ -41,7 +41,7 @@ class OllamaService:
     async def get_rephrasing(self, original_text: str) -> str:
         prompt = self.get_prompt(TaskType.REPHRASING, original_text)
         response = await self.generate_and_parse_xml(prompt)
-        return response
+        return xmltodict.parse(response).get("response", {}).get("rephrase", "")
 
     async def get_summarization(self, original_text: str) -> str:
         prompt = self.get_prompt(TaskType.SUMMARIZATION, original_text)
