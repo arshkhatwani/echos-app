@@ -13,6 +13,7 @@ import { Message } from "../types";
 import MessageStatusIcon from "./MessageStatusIcon";
 import Sidebar from "./Sidebar";
 import useScrollToBottom from "../hooks/useScrollToBottom";
+import ChatMessage from "./ChatMessage";
 
 const Chat = () => {
   const [contacts, setContacts] = useAtom(contactsAtom);
@@ -95,30 +96,7 @@ const Chat = () => {
             <div className="flex-1 bg-[#e5ded8] p-4 pb-0 overflow-y-auto">
               <div ref={scrollRef} className="space-y-4 pb-4">
                 {contacts[selectedChat].messages.map((message: Message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${
-                      message.sent ? "justify-end" : "justify-start"
-                    }`}
-                  >
-                    <div
-                      className={`rounded-lg p-3 max-w-xs lg:max-w-md ${
-                        message.sent ? "bg-green-100" : "bg-white"
-                      }`}
-                    >
-                      <p className="text-sm">{message.content}</p>
-                      <div className="mt-1 flex justify-end items-center space-x-1">
-                        <span className="text-xs text-gray-500 block">
-                          {message.time}
-                        </span>
-                        {message.sent ? (
-                          <MessageStatusIcon status={message.status} />
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ChatMessage key={message.id} message={message} />
                 ))}
               </div>
             </div>
