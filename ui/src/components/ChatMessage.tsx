@@ -1,5 +1,6 @@
 import { Message } from "../types";
 import MessageStatusIcon from "./MessageStatusIcon";
+import SummariseBtn from "./SummariseBtn";
 
 export default function ChatMessage({ message }: { message: Message }) {
   return (
@@ -14,6 +15,9 @@ export default function ChatMessage({ message }: { message: Message }) {
           <span className="text-xs text-gray-500 block">{message.time}</span>
           {message.sent ? <MessageStatusIcon status={message.status} /> : <></>}
         </div>
+        {!message.sent && message.content.split(" ").length > 10 && (
+          <SummariseBtn message={message.content} />
+        )}
       </div>
     </div>
   );
