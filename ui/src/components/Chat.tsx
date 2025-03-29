@@ -3,6 +3,7 @@ import { MoreVertical, Paperclip, Search, Send, Smile } from "lucide-react";
 import React, { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { MessageStatus, MessageType } from "../enums";
+import useScrollToBottom from "../hooks/useScrollToBottom";
 import {
   contactsAtom,
   newMessageAtom,
@@ -10,10 +11,8 @@ import {
   sendMessageAtom,
 } from "../store/atoms";
 import { Message } from "../types";
-import MessageStatusIcon from "./MessageStatusIcon";
-import Sidebar from "./Sidebar";
-import useScrollToBottom from "../hooks/useScrollToBottom";
 import ChatMessage from "./ChatMessage";
+import Sidebar from "./Sidebar";
 
 const Chat = () => {
   const [contacts, setContacts] = useAtom(contactsAtom);
