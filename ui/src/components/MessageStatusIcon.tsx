@@ -1,5 +1,4 @@
 import { MessageStatus } from "../enums";
-import { Check, Clock, CheckCheck } from "lucide-react";
 
 export default function MessageStatusIcon({
   status,
@@ -8,12 +7,20 @@ export default function MessageStatusIcon({
 }) {
   switch (status) {
     case MessageStatus.SENT:
-      return <Check className="h-4 w-4 text-gray-500" />;
+      return (
+        <span className="icon-[tabler--check] h-4 w-4 align-bottom"></span>
+      );
     case MessageStatus.DELIVERED:
-      return <CheckCheck className="h-4 w-4 text-gray-500" />;
+      return (
+        <span className="icon-[tabler--checks] h-4 w-4 align-bottom"></span>
+      );
     case MessageStatus.READ:
-      return <CheckCheck className="h-4 w-4 text-sky-500" />;
+      return (
+        <span className="icon-[tabler--checks] h-4 w-4 text-success align-bottom"></span>
+      );
     default:
-      return <Clock className="h-4 w-4 text-gray-500" />;
+      return (
+        <span className="icon-[tabler--clock] h-4 w-4 align-bottom"></span>
+      );
   }
 }
