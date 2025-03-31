@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@plugin "flyonui" {
+  themes: luxury --default;
+}
+@source "./node_modules/flyonui/dist/index.js";
+@plugin "@iconify/tailwind4";
 
 button {
   cursor: pointer;
