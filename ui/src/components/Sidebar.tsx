@@ -17,8 +17,8 @@ function Sidebar() {
 
   return (
     <>
-      <div className="w-1/3 border-r bg-white">
-        <div className="h-16 border-b flex items-center justify-between px-4">
+      <div className="w-1/3 border-r border-neutral">
+        <div className="h-16 border-b border-neutral flex items-center justify-between px-4">
           <div className="flex items-center space-x-3">
             <img
               className="h-10 w-10 rounded-full"

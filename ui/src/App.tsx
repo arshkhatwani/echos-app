@@ -16,7 +16,7 @@ function App() {
   useWebSocket();
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="h-screen">
       {!isAuthenticated ? <Login onLogin={handleLogin} /> : <Chat />}
     </div>
   );

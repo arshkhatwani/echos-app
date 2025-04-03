@@ -1,5 +1,4 @@
 import { useAtom } from "jotai";
-import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { chat, SearchUserResponse } from "../api/chat";
 import { SAMPLE_AVATAR } from "../config/constants";
@@ -48,16 +47,17 @@ function SearchUsers() {
 
   return (
     <div className="p-2 relative">
-      <div className="relative">
+      <div className="input max-w">
+        <span className="icon-[tabler--search] text-base-content/80 my-auto me-3 size-5 shrink-0"></span>
         <input
           type="text"
+          className="grow"
           placeholder="Search chats"
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
       </div>
+
       {searchQuery.trim() && (
         <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-[300px] overflow-y-auto z-50">
           {searchResults.length > 0 ? (

@@ -94,7 +94,7 @@ const Chat = () => {
             {/* Message Input */}
             <form
               onSubmit={handleSendMessage}
-              className="h-16  px-4 flex items-center space-x-4"
+              className="h-16 px-4 flex items-center space-x-4 border-t border-neutral"
             >
               <input
                 type="text"
