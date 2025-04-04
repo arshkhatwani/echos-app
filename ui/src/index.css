@@ -2,8 +2,9 @@
 @plugin "flyonui" {
   themes: luxury --default;
 }
-@source "./node_modules/flyonui/dist/index.js";
 @plugin "@iconify/tailwind4";
+@import "flyonui/variants.css";
+@source "./node_modules/flyonui/flyonui.js";
 
 * {
   font-family: "Archivo", sans-serif;

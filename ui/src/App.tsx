@@ -4,6 +4,7 @@ import Chat from "./components/Chat";
 import { isAuthenticatedAtom } from "./store/atoms";
 import useWebSocket from "./hooks/useWebSocket";
 import useAutoLogin from "./hooks/useAutoLogin";
+import useFlyonUI from "./hooks/useFlyonUI";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -12,6 +13,7 @@ function App() {
     setIsAuthenticated(true);
   };
 
+  useFlyonUI();
   useAutoLogin();
   useWebSocket();
 
