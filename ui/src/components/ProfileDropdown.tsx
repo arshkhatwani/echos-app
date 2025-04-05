@@ -1,25 +1,26 @@
-import { MoreVertical } from "lucide-react";
-import { useState } from "react";
 import LogoutBtn from "./LogoutBtn";
 
 function ProfileDropdown() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
-    <div className="relative">
+    <div className="dropdown relative inline-flex">
       <button
-        className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsDropdownOpen(!isDropdownOpen);
-        }}
+        className="dropdown-toggle btn btn-text btn-primary btn-circle"
+        id="dropdown-default"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-label="Dropdown"
       >
-        <MoreVertical className="h-5 w-5 text-gray-500" />
+        <span className="icon-[tabler--dots-vertical] size-5"></span>
       </button>
-      {isDropdownOpen && (
-        <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
-          <LogoutBtn />
-        </div>
-      )}
+      <ul
+        className="dropdown-menu dropdown-open:opacity-100 hidden min-w-60"
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="dropdown-default"
+      >
+        <LogoutBtn />
+      </ul>
     </div>
   );
 }
