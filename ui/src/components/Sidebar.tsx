@@ -53,7 +53,7 @@ function Sidebar() {
                   <h3 className="text-sm font-medium">{contact.name}</h3>
                   <span className="text-xs text-gray-500">{contact.time}</span>
                 </div>
-                <p className="text-sm text-gray-500 truncate">
+                <p className="text-sm text-primary truncate">
                   {contact.lastMessage}
                 </p>
               </div>

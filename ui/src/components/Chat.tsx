@@ -77,7 +77,7 @@ const Chat = () => {
                   <h3 className="text-sm font-medium">
                     {contacts[selectedChat].name}
                   </h3>
-                  <p className="text-xs text-gray-500">Online</p>
+                  <p className="text-xs text-primary">Online</p>
                 </div>
               </div>
             </div>
