@@ -25,9 +25,7 @@ function Sidebar() {
               src={currentUser.avatar}
               alt="Your avatar"
             />
-            <span className="font-medium text-gray-900">
-              {currentUser.name}
-            </span>
+            <span className="font-medium">{currentUser.name}</span>
           </div>
           <div className="flex space-x-2">
             <ProfileDropdown />
@@ -41,8 +39,8 @@ function Sidebar() {
             <div
               key={contact.id}
               onClick={() => setSelectedChat(contact.id)}
-              className={`flex items-center px-4 py-3 cursor-pointer hover:bg-gray-50 ${
-                selectedChat === contact.id ? "bg-gray-100" : ""
+              className={`flex items-center px-4 py-3 cursor-pointer hover:bg-neutral ${
+                selectedChat === contact.id ? "bg-neutral" : ""
               }`}
             >
               <img
